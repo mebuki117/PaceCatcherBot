@@ -63,35 +63,35 @@ async def on_message(message):
           pbpace_list[i+m] = f'{pbpace_list[i+m]}:00'
       break
 
-  # evaluation: -1=NoPlayer, 0= Nothing, 1=FS, 3=SS, 4=B, 5=E, 6=SSPB, 7=EE, 8=BPB, 9=EPB, 10=EEPB
+  # priority: -1=NoPlayer, 0= Nothing, 1=FS, 3=SS, 4=B, 5=E, 6=SSPB, 7=EE, 8=BPB, 9=EPB, 10=EEPB
   role = discord.utils.get(guild.roles, name="*FS30:0")
   if fix_message.find(f'{role.id}') != -1: # FS (Bastion)
-    evaluation = 1
+    priority = 1
     # not exist a FSPB role
 
   role = discord.utils.get(guild.roles, name="*SS40:0")
   if fix_message.find(f'{role.id}') != -1: # SS (Bastion)
-    evaluation = 3
+    priority = 3
     if string_to_datetime(fix_message[3:fix_message.find(' -')]) < string_to_datetime(pbpace_list[i+2]): # ss < pb pace
-      evaluation = 6
+      priority = 6
 
   role = discord.utils.get(guild.roles, name="*B45:0")
   if fix_message.find(f'{role.id}') != -1: # B
-    evaluation = 4
+    priority = 4
     if string_to_datetime(fix_message[3:fix_message.find(' -')]) < string_to_datetime(pbpace_list[i+3]): # b < pb pace
-      evaluation = 8
+      priority = 8
 
   role = discord.utils.get(guild.roles, name="*E52:0")
   if fix_message.find(f'{role.id}') != -1: # E
-    evaluation = 5
+    priority = 5
     if string_to_datetime(fix_message[3:fix_message.find(' -')]) < string_to_datetime(pbpace_list[i+4]): # e < pb pace
-      evaluation = 9
+      priority = 9
 
   role = discord.utils.get(guild.roles, name="*EE55:0")
   if fix_message.find(f'{role.id}') != -1: # EE
-    evaluation = 7
+    priority = 7
     if string_to_datetime(fix_message[3:fix_message.find(' -')]) < string_to_datetime(pbpace_list[i+5]): # ee < pb pace
-      evaluation = 10
+      priority = 10
 
   # send Temp
   allname = getallnames(path_allnames, path_dir)
@@ -99,7 +99,7 @@ async def on_message(message):
     if fix_message.find(f'{allname[l]}') != -1:
       with open(path_temp, 'w') as f:
         f.write(f'{allname[l]}')
-        f.write(f'\n{evaluation}')
+        f.write(f'\n{priority}')
 
 
   # bot stop command
