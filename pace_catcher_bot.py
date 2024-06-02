@@ -1,4 +1,4 @@
-# v0.1.0
+# v0.2.0
 
 import discord
 import os
@@ -93,12 +93,32 @@ async def on_message(message):
     if string_to_datetime(fix_message[3:fix_message.find(' -')]) < string_to_datetime(pbpace_list[i+5]): # ee < pb pace
       priority = 10
 
+  role = discord.utils.get(guild.roles, name="FIN")
+  if fix_message.find(f'{role.id}') != -1: # FIN
+    priority = 0
+
+  role = discord.utils.get(guild.roles, name="NPB")
+  if fix_message.find(f'{role.id}') != -1: # NPB
+    priority = 11
+
+  # get TwitchID
+  channel = discord.utils.get(message.guild.channels, name='pacecatcher-name-to-id')
+  ids = await channel.fetch_message(channel.last_message_id) # msg ID
+  split = ids.content.replace('\n', '/').replace(' : ', '/')
+  id_list = split.split('/')
+  print(f'id_list: {id_list}')
+
   # send Temp
   allname = getallnames(path_allnames, path_dir)
   for l in range(len(allname)):
     if fix_message.find(f'{allname[l]}') != -1:
       with open(path_temp, 'w') as f:
-        f.write(f'{allname[l]}')
+        if allname[l] in id_list:
+          f.write(f'{id_list[id_list.index(allname[l])]}')
+          print(allname[l])
+          print(id_list[id_list.index(allname[l])])
+        else:
+          f.write(f'{allname[l]}')
         f.write(f'\n{priority}')
 
 
