@@ -1,4 +1,4 @@
-# v0.2.0
+# v0.2.1
 
 import discord
 import os
@@ -109,17 +109,17 @@ async def on_message(message):
   print(f'id_list: {id_list}')
 
   # send Temp
-  allname = getallnames(path_allnames, path_dir)
-  for l in range(len(allname)):
-    if fix_message.find(f'{allname[l]}') != -1:
-      with open(path_temp, 'w') as f:
-        if allname[l] in id_list:
-          f.write(f'{id_list[id_list.index(allname[l])]}')
-          print(allname[l])
-          print(id_list[id_list.index(allname[l])])
-        else:
-          f.write(f'{allname[l]}')
-        f.write(f'\n{priority}')
+  if fix_message.find('@'):
+    allname = getallnames(path_allnames, path_dir)
+    for l in range(len(allname)):
+      if fix_message.find(f'{allname[l]}') != -1:
+        with open(path_temp, 'w') as f:
+          if allname[l] in id_list:
+            f.write(f'{id_list[id_list.index(allname[l])]}')
+            print(id_list[id_list.index(allname[l])])
+          else:
+            f.write(f'{allname[l]}')
+          f.write(f'\n{priority}')
 
 
   # bot stop command
