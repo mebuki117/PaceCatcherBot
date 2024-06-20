@@ -113,7 +113,7 @@ async def on_message(message):
     allname = getallnames(path_allnames, path_dir)
     for l in range(len(allname)):
       if fix_message.find(f'{allname[l]}') != -1:
-        with open(path_temp, 'w') as f:
+        with open(path_temp, 'w', encoding='utf-8') as f:
           if allname[l] in id_list:
             f.write(f'{id_list[id_list.index(allname[l])]}')
             print(id_list[id_list.index(allname[l])])
