@@ -4,6 +4,8 @@ import discord
 import os
 import datetime
 import time
+import json
+import requests
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -11,7 +13,9 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 path_current = f'{os.path.dirname(os.path.realpath(__file__))}'
+path_names = f'{path_current}\\data\\names.txt'
 path_allnames = f'{path_current}\\data\\allnames.txt'
+path_pr = f'{path_current}\\data\\priority.txt'
 path_temp = f'{path_current}\\data\\temp.txt'
 path_dir = f'{path_current}\\data'
 
@@ -113,13 +117,25 @@ async def on_message(message):
     allname = getallnames(path_allnames, path_dir)
     for l in range(len(allname)):
       if fix_message.find(f'{allname[l]}') != -1:
-        with open(path_temp, 'w') as f:
+        with open(path_temp, 'w', encoding='utf-8') as f:
           if allname[l] in id_list:
             f.write(f'{id_list[id_list.index(allname[l])]}')
             print(id_list[id_list.index(allname[l])])
           else:
             f.write(f'{allname[l]}')
           f.write(f'\n{priority}')
+        url = requests.get('https://paceman.gg/api/ars/liveruns')
+        data = json.loads(url.text)
+        with open(path_names, encoding='utf-8') as f:
+          name = f.read().splitlines()
+          for l in range(len(data)):
+            print(f'find nickname: {data[l]['nickname']}')
+            if data[l]['nickname'] in name:
+              with open(path_pr, encoding='utf-8') as f:
+                pr = f.read().splitlines()
+                pr[name.index(data[l]['nickname'])] = '0'
+                with open(path_pr, 'w', encoding='utf-8') as f:
+                  f.writelines('\n'.join(pr))
 
 
   # bot stop command
