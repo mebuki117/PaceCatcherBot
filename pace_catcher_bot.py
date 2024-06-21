@@ -63,7 +63,7 @@ async def on_message(message):
           pbpace_list[i+m] = f'{pbpace_list[i+m]}:00'
       break
 
-  # priority: -1=NoPlayer, 0= Nothing, 1=FS, 3=SS, 4=B, 5=E, 6=SSPB, 7=EE, 8=BPB, 9=EPB, 10=EEPB
+  # priorities: -1=NoPlayer, 0=Nothing, 1=FS, 3=SS, 4=B, 5=E, 6=SSPB, 7=EE, 8=BPB, 9=EPB, 10=EEPB
   role = discord.utils.get(guild.roles, name="*FS30:0")
   if fix_message.find(f'{role.id}') != -1: # FS (Bastion)
     priority = 1
@@ -102,7 +102,7 @@ async def on_message(message):
     priority = 11
 
   # get TwitchID
-  channel = discord.utils.get(message.guild.channels, name='pacecatcher-name-to-id')
+  channel = discord.utils.get(message.guild.channels, name='pacecatcher-id-to-name')
   ids = await channel.fetch_message(channel.last_message_id) # msg ID
   split = ids.content.replace('\n', '/').replace(' : ', '/')
   id_list = split.split('/')
