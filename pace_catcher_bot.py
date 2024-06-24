@@ -1,4 +1,4 @@
-# v0.2.1
+# v0.2.2 pre1
 
 import discord
 import os
@@ -101,25 +101,20 @@ async def on_message(message):
   if fix_message.find(f'{role.id}') != -1: # NPB
     priority = 11
 
-  # get TwitchID
-  channel = discord.utils.get(message.guild.channels, name='pacecatcher-id-to-name')
-  ids = await channel.fetch_message(channel.last_message_id) # msg ID
-  split = ids.content.replace('\n', '/').replace(' : ', '/')
-  id_list = split.split('/')
-  print(f'id_list: {id_list}')
-
   # send Temp
   if fix_message.find('@'):
     allname = getallnames(path_allnames, path_dir)
     for l in range(len(allname)):
-      if fix_message.find(f'{allname[l]}') != -1:
+      if fix_message.find(f'{allname[l]}') != -1 and fix_message.find('https://twitch.tv') != -1:
         with open(path_temp, 'w', encoding='utf-8') as f:
-          if allname[l] in id_list:
-            f.write(f'{id_list[id_list.index(allname[l])]}')
-            print(id_list[id_list.index(allname[l])])
-          else:
-            f.write(f'{allname[l]}')
+          f.write(f'{allname[l]}')
           f.write(f'\n{priority}')
+          break
+      # if fix_message.find('mebuki117') != -1:
+      #   with open(path_temp, 'w', encoding='utf-8') as f:
+      #     f.write(f'mebuchanbot')
+      #     f.write(f'\n{priority}')
+      #     break
 
 
   # bot stop command
